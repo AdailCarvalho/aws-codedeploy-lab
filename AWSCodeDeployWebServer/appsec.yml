@@ -1,0 +1,29 @@
+version: 0.0
+so: linux
+# Copia todos os arquivos de uma pasta local para um destino EC2
+files:
+  - source: /app
+    destination: /var/www/html
+# Especifica quais owners/grupos de cada objeto (arquivos, etc) 
+permissions:
+  - object: /
+    pattern: "**"
+    owner: root
+    group: root    
+hooks:
+  ApplicationStop:
+    - location: scripts/ApplicationStop.sh
+      timout: 120
+      runas: root
+  BeforeInstall:
+    - location: scripts/BeforeInstall.sh
+      timout: 300
+      runas: root
+  AfterInstall:
+    - location: scripts/AfterInstall.sh
+      timout: 30
+      runas: root
+  ApplicationStart:
+    - location: scripts/ApplicationStart.sh
+      timout: 120
+      runas: root
